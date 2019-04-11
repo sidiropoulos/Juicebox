@@ -30,9 +30,11 @@ import juicebox.ProcessHelper;
 import juicebox.assembly.AssemblyFileImporter;
 import juicebox.assembly.IGVFeatureCopy;
 import juicebox.mapcolorui.Feature2DHandler;
+import juicebox.mapcolorui.HeatmapRenderer;
 import juicebox.state.SaveFileDialog;
 import juicebox.tools.dev.Private;
 import juicebox.windowui.*;
+//import org.broad.igv.renderer.HeatmapRenderer;
 import org.broad.igv.ui.util.MessageUtils;
 
 import javax.swing.*;
@@ -556,8 +558,6 @@ public class MainMenuBar extends JMenuBar {
       devMenu.add(useAssemblyMatrix);
     }
 
-
-
     JMenuItem editPearsonsColorItem = new JMenuItem("Edit Pearson's Color Scale");
     editPearsonsColorItem.addActionListener(new ActionListener() {
       @Override
@@ -575,6 +575,32 @@ public class MainMenuBar extends JMenuBar {
       }
     });
     devMenu.add(mapSubset);
+
+    final JTextField diffScale = new JTextField("" + HeatmapRenderer.controlDiffScale);
+    diffScale.setEnabled(true);
+    diffScale.isEditable();
+    diffScale.setToolTipText("Set control scale.");
+
+    final JButton updateDiffScaleOptions = new JButton("Update");
+    updateDiffScaleOptions.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        if (diffScale.getText().length() > 0) {
+          HeatmapRenderer.controlDiffScale = Double.parseDouble(diffScale.getText());
+          superAdapter.getHeatmapPanel().repaint();
+          superAdapter.refresh();
+        }
+      }
+    });
+    updateDiffScaleOptions.setToolTipText("Set control map scaling factor in 'Observed - Control' Mode.");
+
+    final JPanel scaleOptions = new JPanel();
+    scaleOptions.setLayout(new GridLayout(0, 2));
+    scaleOptions.add(diffScale);
+    scaleOptions.add(updateDiffScaleOptions);
+    scaleOptions.setToolTipText("Set control map scaling factor in 'Observed - Control' Mode.");
+
+    devMenu.addSeparator();
+    devMenu.add(scaleOptions);
 
     final JTextField numSparse = new JTextField("" + Feature2DHandler.numberOfLoopsToFind);
     numSparse.setEnabled(true);

@@ -58,6 +58,8 @@ class HeatmapRenderer {
     private final Map<String, OEColorScale> ratioColorScaleMap = new HashMap<>();
     private final PreDefColorScale preDefColorScale;
 
+    public static double controlDiffScale = 1.0;
+
     public HeatmapRenderer() {
 
         pearsonColorScale = new HiCColorScale();
@@ -449,7 +451,7 @@ class HeatmapRenderer {
                                     if (ctrlRecord != null && ctrlRecord.getCounts() > 0) {
                                         double num = rec.getCounts() / averageCount;
                                         double den = ctrlRecord.getCounts() / ctrlAverageCount;
-                                        score = (num - den) * averageAcrossMapAndControl;
+                                        score = num - controlDiffScale * den;
                                     }
                                 } else {
                                     score = rec.getCounts();

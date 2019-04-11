@@ -77,6 +77,7 @@ public class SuperAdapter {
     private AnnotationLayerHandler activeLayer;
     private AssemblyStateTracker assemblyStateTracker;
     private HiCColorScale pearsonColorScale;
+    private HiCColorScale diffScale;
     private LayersPanel layersPanel;
     private boolean layerPanelIsVisible = false;
     public static boolean assemblyModeCurrentlyActive = false;
